@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .forms import SignUpForm
+from .models import Record
 
 def home(request):
+    movies = Record.objects.all()
+
+
     # ver se o usuário está logado
     if request.method == 'POST':
         username = request.POST['username']
@@ -18,7 +23,7 @@ def home(request):
             messages.success(request, 'Houve um erro ao fazer login, por favor tente novamente...')
             return redirect('home')
     else:
-        return render(request, 'home.html', {})
+        return render(request, 'home.html', {movies:movies})
 
 
 def logout_user(request):
@@ -27,4 +32,19 @@ def logout_user(request):
     return redirect('home')
 
 def register_user(request):
-    return render(request, 'register.html', {})
+	if request.method == 'POST':
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			form.save()
+			# Authenticate and login
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password1']
+			user = authenticate(username=username, password=password)
+			login(request, user)
+			messages.success(request, "Você se registrou com sucesso! Bem-vindo!")
+			return redirect('home')
+	else:
+		form = SignUpForm()
+		return render(request, 'register.html', {'form':form})
+
+	return render(request, 'register.html', {'form':form})

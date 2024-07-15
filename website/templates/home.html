@@ -6,7 +6,17 @@
 
     {% if user.is_authenticated %}
 
-        <h1> Hello World! </h1>
+        <h1> Filmes </h1>
+        {% if movies %}
+
+        <ul>
+            {% for movie in movies %}
+                <li>{{ movie.movie_name }}</li>
+                <!-- Aqui você pode adicionar outros campos do filme -->
+            {% endfor %}
+        </ul>
+
+        {% endif %}
 
     {% else %}
 
