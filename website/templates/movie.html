@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ movie.movie_name }}</h1> 
+            <p><strong>Data de Lançamento:</strong> {{ movie.release_date }}</p>
+            <p><strong>Descrição:</strong></p>
+            <p>{{ movie.description }}</p>
+            {% if movie.trailer_link %}
+            <p><strong>Link para o trailer:</strong> <a href="{{ movie.trailer_link }}">{{ movie.trailer_link }}</a></p>
+            {% endif %}
+            <strong>Links para Assistir:</strong>
+            {% if watch_links %}
+            <ul>
+                {% for link in watch_links %}
+                    <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>Em breve nos cinemas.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <img src="{{ movie.cover_image.url }}" alt="{{ movie.movie_name }}" class="img-fluid">
+        </div>
+    </div>
+</div>
+{% endblock %}

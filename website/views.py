@@ -1,35 +1,34 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth import authenticate, logout, login as auth_login
 from django.contrib import messages
 from .forms import SignUpForm
-from .models import Record
+from .models import Movie
 
 def home(request):
-    movies = Record.objects.all()
+    if request.user.is_authenticated:
+        movies = Movie.objects.all()
+        context = {'movies': movies}
+        return render(request, 'home.html', context)
+    else:
+        return redirect('login')
 
-
-    # ver se o usuário está logado
+def login(request):
     if request.method == 'POST':
         username = request.POST['username']
-        password= request.POST['password']
-
-        # autenticacao
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            messages.success(request, 'Login efetuado com sucesso!')
+            auth_login(request, user)
             return redirect('home')
         else:
-            messages.success(request, 'Houve um erro ao fazer login, por favor tente novamente...')
-            return redirect('home')
+            return render(request, 'login.html', {'error': 'Credenciais inválidas'})
     else:
-        return render(request, 'home.html', {movies:movies})
-
+        return render(request, 'login.html')
 
 def logout_user(request):
     logout(request)
     messages.success(request, 'Você foi deslogado...')
-    return redirect('home')
+    return redirect('login')
 
 def register_user(request):
 	if request.method == 'POST':
@@ -40,7 +39,7 @@ def register_user(request):
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password1']
 			user = authenticate(username=username, password=password)
-			login(request, user)
+			auth_login(request, user)
 			messages.success(request, "Você se registrou com sucesso! Bem-vindo!")
 			return redirect('home')
 	else:
@@ -48,3 +47,12 @@ def register_user(request):
 		return render(request, 'register.html', {'form':form})
 
 	return render(request, 'register.html', {'form':form})
+
+def movie(request, id):
+    movie = get_object_or_404(Movie, pk=id)
+    watch_links = movie.watch_links.split(',') if movie.watch_links else []
+    context = {
+        'movie': movie,
+        'watch_links': watch_links,
+    }
+    return render(request, 'movie.html', context)

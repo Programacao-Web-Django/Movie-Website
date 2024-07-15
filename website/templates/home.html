@@ -2,44 +2,25 @@
 
 {% block content %}
 
-<div class = 'col-md-6 offset-md-3'>
+<div class='col-md-6 offset-md-3'>
 
-    {% if user.is_authenticated %}
+    <h1> Filmes </h1>
+    {% if movies %}
 
-        <h1> Filmes </h1>
-        {% if movies %}
-
-        <ul>
-            {% for movie in movies %}
-                <li>{{ movie.movie_name }}</li>
-                <!-- Aqui você pode adicionar outros campos do filme -->
-            {% endfor %}
-        </ul>
-
-        {% endif %}
-
-    {% else %}
-
-        <h1> login </h1>
-        <br/>
-
-        <form method="post" action="{% url 'home' %}">
-            {% csrf_token %}
-            <form>
-                <div class="mb-3">
-                <input type="text" class="form-control" name="username", placeholder="Nome de usuário", required>
-                </div>
-                <div class="mb-3"> <br/>
-                <input type="password" class="form-control" name="password", placeholder="Senha", required >
-                </div>
-                <br/>
-                <button type="submit" class="btn btn-secondary">Enviar</button>
-            </form>
-            
-        </form>
-
-    </div>
+    <ul>
+        {% for movie in movies %}
+        <a href="{% url 'movie' id=movie.id %}">
+            <li>
+                {{ movie.movie_name }} <br />
+                <img src="{{movie.cover_image.url}}" alt="{{movie.movie_name}}"><br />
+                <a href="{{ movie.trailer_link }}"> {{ movie.trailer_link }} </a> <br />
+            </li>
+        </a>
+        <!-- Aqui você pode adicionar outros campos do filme -->
+        {% endfor %}
+    </ul>
 
     {% endif %}
+</div>
 
 {% endblock %}
