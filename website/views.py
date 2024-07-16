@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, logout, login as auth_login
 from django.contrib import messages
-from .forms import SignUpForm
+from .forms import SignUpForm, CommentForm
 from .models import Movie
 
 def home(request):
@@ -51,8 +51,22 @@ def register_user(request):
 def movie(request, id):
     movie = get_object_or_404(Movie, pk=id)
     watch_links = movie.watch_links.split(',') if movie.watch_links else []
-    context = {
-        'movie': movie,
-        'watch_links': watch_links,
-    }
+    context = comment_movie(request,id)
+    context['watch_links'] = watch_links
     return render(request, 'movie.html', context)
+
+def comment_movie(request, id):
+    movie = get_object_or_404(Movie, pk=id)
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.movie = movie
+            comment.user = request.user
+            comment.save()
+
+            return redirect('movie', id=movie.id)
+    else:
+        comment_form = CommentForm()
+    return {'comment_form': comment_form, 'movie': movie}
+

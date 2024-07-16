@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Movie
+from .models import Movie, Comment
 from django.core.exceptions import ValidationError
 
 class SignUpForm(UserCreationForm):
@@ -35,3 +35,12 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].widget.attrs['placeholder'] = 'Confirme a Senha'
         self.fields['password2'].label = ''
         self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Digite a mesma senha que antes, para verificação.</small></span>'
+
+class CommentForm(forms.ModelForm):
+    comment = forms.CharField(
+        label="Seu Comentário",
+    )
+
+    class Meta:
+        model = Comment
+        fields = ['comment',]

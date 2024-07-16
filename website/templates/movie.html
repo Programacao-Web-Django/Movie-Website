@@ -21,11 +21,44 @@
             {% else %}
                 <p>Em breve nos cinemas.</p>
             {% endif %}
-            {{movie.average_rating}}
         </div>
         <div class="col-md-4">
             <img src="{{ movie.cover_image.url }}" alt="{{ movie.movie_name }}" class="img-fluid">
         </div>
     </div>
+
+    <form method="post" action="{% url 'comment_movie' id=movie.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ comment_form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+    </form>
+
+    <h3>Comentários:</h3>
+    {% for comment in movie.comments.all %}
+        <div class="card my-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ comment.user.username }}</h5>
+                <p class="card-text">{{ comment.comment }}</p>
+                <p class="card-text"><small class="text-muted">Comentado em: {{ comment.created_at }}</small></p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#rating').rating({
+            step: 1,
+            starCaptions: function(val) {
+                return val;
+            },
+            starCaptionClasses: function(val) {
+                return 'badge badge-primary';
+            }
+        });
+    });
+</script>
 </div>
 {% endblock %}

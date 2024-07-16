@@ -13,25 +13,19 @@ class Movie(models.Model):
     def __str__(self):
         return self.movie_name
 
-    @property
-    def average_rating(self):
-        ratings = self.rates.all()
-        if ratings:
-            total_ratings = sum([rating.value for rating in ratings])
-            return total_ratings / len(ratings)
-        else:
-            return 0
-
     class Meta:
         verbose_name = "Filme"
         verbose_name_plural = "Filmes"
 
-class Rate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='rates', verbose_name="Filme")
-    value = models.IntegerField(verbose_name="Avaliação", default=0, help_text="Insira uma avaliação de 1 a 5")
+class Comment(models.Model):
+    movie = models.ForeignKey(Movie, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    comment = models.TextField(verbose_name="Comentário")
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.movie.movie_name} - {self.comment[:20]}"
 
     class Meta:
-        unique_together = ('user', 'movie')  # Define que um usuário só pode avaliar um filme uma vez
-        verbose_name = "Avaliação"
-        verbose_name_plural = "Avaliações"
+        verbose_name = "Comentário"
+        verbose_name_plural = "Comentários"
