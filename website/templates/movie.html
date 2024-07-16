@@ -21,6 +21,7 @@
             {% else %}
                 <p>Em breve nos cinemas.</p>
             {% endif %}
+            {{movie.average_rating}}
         </div>
         <div class="col-md-4">
             <img src="{{ movie.cover_image.url }}" alt="{{ movie.movie_name }}" class="img-fluid">
