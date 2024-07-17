@@ -16,7 +16,8 @@
                 <a href="{{ movie.trailer_link }}"> {{ movie.trailer_link }} </a> <br />
             </li>
         </a>
-        <!-- Aqui você pode adicionar outros campos do filme -->
+        {% empty %}
+            <li>Nenhum filme encontrado</li>
         {% endfor %}
     </ul>
 

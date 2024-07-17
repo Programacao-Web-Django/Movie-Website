@@ -70,3 +70,8 @@ def comment_movie(request, id):
         comment_form = CommentForm()
     return {'comment_form': comment_form, 'movie': movie}
 
+def search_movie(request):
+     if request.method == 'GET':
+         query = request.GET.get('q')
+         movies = Movie.objects.filter(movie_name__icontains=query)
+         return render(request, 'home.html', {'movies': movies, 'query': query})

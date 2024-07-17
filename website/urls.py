@@ -8,4 +8,5 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('<int:id>', views.movie, name='movie'),
     path('<int:id>/comment/', views.comment_movie, name='comment_movie'),
+    path('search/', views.search_movie, name='search_movie'),
 ]
