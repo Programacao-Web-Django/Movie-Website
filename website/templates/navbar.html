@@ -9,13 +9,14 @@
 
           {% if user.is_authenticated %}
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Sair</a>
-        </li>
-        <ul><li><form action="{% url 'search_movie' %}" method="GET" class="d-flex" role="search">
-          <input name="q" value="{{query}}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">lç
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form></li></ul>
+          <ul><li><form action="{% url 'search_movie' %}" method="GET" class="d-flex" role="search">
+            <input name="q" value="{{query}}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">lç
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form></li></ul>
+          <li style = "color: #ffff"> {{ user.username }}</li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Sair</a>
+          </li>
         
           {% else %}
           <li class="nav-item">
