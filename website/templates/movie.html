@@ -1,49 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
-            <h1>{{ movie.movie_name }}</h1> 
+            <h1 class="text-primary">{{ movie.movie_name }}</h1> 
             <p><strong>Data de Lançamento:</strong> {{ movie.release_date }}</p>
+            <hr>
             <p><strong>Descrição:</strong></p>
             <p>{{ movie.description }}</p>
             {% if movie.trailer_link %}
-            <p><strong>Link para o trailer:</strong> <a href="{{ movie.trailer_link }}">{{ movie.trailer_link }}</a></p>
+            <p><strong>Link para o trailer:</strong> <a href="{{ movie.trailer_link }}" class="text-decoration-none text-info" target="_blank">Assistir Trailer</a></p>
             {% endif %}
             <strong>Links para Assistir:</strong>
             {% if watch_links %}
-            <ul>
+            <ul class="list-group mb-4">
                 {% for link in watch_links %}
-                    <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                    <li class="list-group-item"><a href="{{ link }}" target="_blank" class="text-decoration-none text-info">Assistir</a></li>
                 {% endfor %}
             </ul>
             {% else %}
-                <p>Em breve nos cinemas.</p>
+                <p class="text-warning">Em breve nos cinemas.</p>
             {% endif %}
         </div>
         <div class="col-md-4">
-            <img src="{{ movie.cover_image.url }}" alt="{{ movie.movie_name }}" class="img-fluid">
+            <div class="card shadow-sm">
+                <img src="{{ movie.cover_image.url }}" alt="{{ movie.movie_name }}" class="card-img-top img-fluid rounded">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ movie.movie_name }}</h5>
+                </div>
+            </div>
         </div>
     </div>
 
-    <form method="post" action="{% url 'comment_movie' id=movie.id %}">
+    <form method="post" action="{% url 'comment_movie' id=movie.id %}" class="mt-4 p-4 border rounded bg-light shadow-sm">
         {% csrf_token %}
-        <div class="form-group">
+        <div class="form-group mb-3">
             {{ comment_form.as_p }}
         </div>
-        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+        <button type="submit" class="btn btn-success">Enviar Avaliação</button>
     </form>
 
-    <h3>Comentários:</h3>
+    <h3 class="mt-4 text-primary">Comentários:</h3>
     {% for comment in movie.comments.all %}
-        <div class="card my-2">
+        <div class="card my-2 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">{{ comment.user.username }}</h5>
+                <h5 class="card-title text-info">{{ comment.user.username }}</h5>
                 <p class="card-text">{{ comment.comment }}</p>
                 <p class="card-text"><small class="text-muted">Comentado em: {{ comment.created_at }}</small></p>
             </div>
         </div>
+    {% empty %}
+        <p class="text-muted">Ainda não há comentários. Seja o primeiro a comentar!</p>
     {% endfor %}
 </div>
 
@@ -60,5 +68,4 @@
         });
     });
 </script>
-</div>
 {% endblock %}

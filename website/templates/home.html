@@ -2,25 +2,26 @@
 
 {% block content %}
 
-<div class='col-md-6 offset-md-3'>
-
-    <h1> Filmes </h1>
+<div class="col-md-6 offset-md-3 mt-4">
+    <h1 class="text-center text-primary">Filmes</h1>
     {% if movies %}
-
-    <ul>
+    <ul class="list-group">
         {% for movie in movies %}
-        <a href="{% url 'movie' id=movie.id %}">
-            <li>
-                {{ movie.movie_name }} <br />
-                <img src="{{movie.cover_image.url}}" alt="{{movie.movie_name}}"><br />
-                <a href="{{ movie.trailer_link }}"> {{ movie.trailer_link }} </a> <br />
-            </li>
-        </a>
+        <li class="list-group-item border-primary mb-3 shadow-sm p-3">
+            <a href="{% url 'movie' id=movie.id %}" class="text-decoration-none text-dark">
+                <div class="d-flex flex-column align-items-center">
+                    <span class="fw-bold mb-2">{{ movie.movie_name }}</span>
+                    <img src="{{movie.cover_image.url}}" alt="{{movie.movie_name}}" class="img-fluid rounded" style="max-width: 200px;">
+                </div>
+                <div class="mt-2 text-center">
+                    <a href="{{ movie.trailer_link }}" class="btn btn-outline-primary btn-sm" target="_blank">Assistir Trailer</a>
+                </div>
+            </a>
+        </li>
         {% empty %}
-            <li>Nenhum filme encontrado</li>
+        <li class="list-group-item border-danger text-center text-danger">Nenhum filme encontrado</li>
         {% endfor %}
     </ul>
-
     {% endif %}
 </div>
 

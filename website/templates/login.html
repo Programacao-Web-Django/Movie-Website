@@ -1,19 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="col-md-6 offset-md-3">
-    <h1>Login</h1>
-    <br/>
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="mb-3">
-            <input type="text" class="form-control" name="username" placeholder="Nome de usuário" required>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-8 col-lg-6 col-xl-4">
+        <div class="card shadow-lg border-light">
+            <div class="card-header bg-primary text-white text-center">
+                <h2>Login</h2>
+            </div>
+            <div class="card-body p-5">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="username" class="form-label">Nome de usuário</label>
+                        <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Digite seu nome de usuário" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Senha</label>
+                        <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Digite sua senha" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">Não tem uma conta? <a href="{% url 'register' %}" class="text-primary">Registrar-se</a></p>
+            </div>
         </div>
-        <div class="mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Senha" required>
-        </div>
-        <br/>
-        <button type="submit" class="btn btn-secondary">Enviar</button>
-    </form>
+    </div>
 </div>
 {% endblock %}
