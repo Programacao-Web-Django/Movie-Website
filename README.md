@@ -2,9 +2,11 @@
 
 Este é um projeto de um website de filmes desenvolvido com Django. O objetivo deste projeto é permitir que os usuários visualizem uma lista de filmes, e comentem sobre os filmes. Cada filme possui informações detalhadas como nome, data de lançamento, descrição, imagem da capa, links para assistir e trailer.
 
-## Autor
+## Autores
 
   - Saimon Gabriel de Andrade
+  - Eduardo Augusto Ribeiro
+  - Marcos Firmino Diniz
 
 ## Funcionalidades
 
